@@ -1,0 +1,78 @@
+INFO liquidity_forecast.synthetic: synthetic: 14532 balance rows, 1359585 transactions, 7 accounts
+INFO liquidity_forecast.seasonality: calendar USD: 34 holidays
+INFO liquidity_forecast.seasonality: calendar EUR: 18 holidays
+INFO liquidity_forecast.seasonality: calendar GBP: 24 holidays
+INFO liquidity_forecast.data: calendar: 2076 open periods from 2025-01-01 07:00:00 to 2025-08-29 18:00:00
+INFO liquidity_forecast.data: filled 72 missing balance observations (0.50%)
+INFO liquidity_forecast.data: flagged 16 outlier flow buckets
+INFO liquidity_forecast.pipeline: open_mask drops 492 rows on account-currency holidays
+INFO liquidity_forecast.features: features[intraday]: 14040 rows x 97 cols
+INFO liquidity_forecast.seasonality: calendar GBP: 24 holidays
+INFO liquidity_forecast.seasonality: calendar USD: 34 holidays
+INFO liquidity_forecast.seasonality: calendar EUR: 18 holidays
+INFO liquidity_forecast.seasonality: seasonality features[intraday]: 30 cols
+INFO liquidity_forecast.pipeline: intraday split sizes train/valid/test = 10320/1896/1824
+INFO liquidity_forecast.features: features[daily]: 1170 rows x 81 cols
+INFO liquidity_forecast.seasonality: calendar GBP: 24 holidays
+INFO liquidity_forecast.seasonality: calendar USD: 34 holidays
+INFO liquidity_forecast.seasonality: calendar EUR: 18 holidays
+INFO liquidity_forecast.seasonality: seasonality features[daily]: 30 cols
+INFO liquidity_forecast.pipeline: daily split sizes train/valid/test = 867/158/145
+INFO liquidity_forecast.models: h=1 fitted ['lgb'] on 9773 rows (2443 calibration)
+INFO liquidity_forecast.models: h=4 fitted ['lgb'] on 9773 rows (2443 calibration)
+INFO liquidity_forecast.models: h=1 fitted ['lgb'] on 820 rows (205 calibration)
+
+32 seasonality features added; feature matrix now 127 cols
+
+GBP agent bank around the 2025 spring bank holiday (26 May):
+                     ccy_pre_holiday  ccy_post_holiday  days_to_ccy_holiday  counter_ccy_holiday  is_uk_tax  days_to_uk_tax
+timestamp                                                                                                                  
+2025-05-22 10:00:00                0                 0                  2.0                    0          1             0.0
+2025-05-23 10:00:00                1                 0                  1.0                    0          0            10.0
+2025-05-27 10:00:00                0                 1                 30.0                    0          0            10.0
+2025-05-28 10:00:00                0                 0                 30.0                    0          0            10.0
+
+Note: 26 May rows are absent for GBP/USD accounts (open_mask) but present for EUR (TARGET2 open).
+            ccy_holiday  counter_ccy_holiday
+account_id                                  
+CB_EUR_ECB            0                    1
+NOS_EUR_DB            0                    1
+
+USD Fed account, US tax date 15 Apr and IMM 18 Jun:
+                     is_us_tax  days_to_us_tax  days_since_us_tax  is_imm  days_to_imm  is_ust_coupon  trend_slope_120
+timestamp                                                                                                             
+2025-04-14 10:00:00          0             1.0                5.0       0         10.0              0         0.001999
+2025-04-15 10:00:00          1             0.0                5.0       0         10.0              1         0.001865
+2025-06-17 10:00:00          0            10.0                1.0       0          1.0              0         0.000781
+2025-06-18 10:00:00          0            10.0                2.0       1          0.0              0         0.000568
+
+Top 15 features, intraday h=4 (incl. seasonality block):
+dom                0.045238
+trend_slope_480    0.042262
+fx_GBPUSD          0.030357
+corr_nostro        0.028571
+bal_scaled         0.027381
+sofr               0.025000
+flow_mean_120      0.025000
+bal_std_120        0.024405
+flow_mean_12       0.023810
+flow_std_12        0.023214
+flow_sum_120       0.022024
+trend_slope_120    0.022024
+trend_resid_480    0.021429
+bal_mean_120       0.020238
+bal_chg_24         0.019643
+dtype: float64
+
+STL diagnostic (daily, CB_EUR_ECB) — trend range vs seasonal amplitude:
+     observed   trend  seasonal   resid
+min    0.8122  0.9103   -0.0673 -0.1636
+max    1.5622  1.2050    0.0379  0.3979
+std    0.0801  0.0491    0.0199  0.0462
+
+Backtest (test):
+        n  mae_scaled  coverage_90  skill_vs_baseline
+1  1817.0    0.004475     0.917446           0.085165
+4  1796.0    0.009735     0.905902           0.216621
+
+total 21s

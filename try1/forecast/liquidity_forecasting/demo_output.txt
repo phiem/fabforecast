@@ -1,0 +1,215 @@
+2026-09-04 03:52:45,225 INFO liquidity_forecast.synthetic: synthetic: 32760 balance rows, 3136629 transactions, 7 accounts
+2026-09-04 03:52:45,483 INFO liquidity_forecast.data: calendar: 4680 open periods from 2024-09-02 07:00:00 to 2026-02-27 18:00:00
+2026-09-04 03:52:45,497 INFO liquidity_forecast.data: filled 163 missing balance observations (0.50%)
+2026-09-04 03:52:46,937 INFO liquidity_forecast.data: flagged 43 outlier flow buckets
+2026-09-04 03:52:47,529 INFO liquidity_forecast.features: features[intraday]: 32760 rows x 99 cols
+2026-09-04 03:52:47,530 INFO liquidity_forecast.pipeline: intraday split sizes train/valid/test = 25536/3612/3612
+2026-09-04 03:52:47,636 INFO liquidity_forecast.features: features[daily]: 2730 rows x 83 cols
+2026-09-04 03:52:47,636 INFO liquidity_forecast.pipeline: daily split sizes train/valid/test = 2135/301/294
+2026-09-04 03:53:06,048 INFO liquidity_forecast.models: h=1 fitted ['lgb', 'xgb'] on 6799 rows (1699 calibration)
+2026-09-04 03:53:06,646 INFO liquidity_forecast.pipeline: CV intraday h=1 fold=0 MAE=2.36e+06 cov90=0.922 dir=0.855 skill=0.079
+2026-09-04 03:53:28,502 INFO liquidity_forecast.models: h=1 fitted ['lgb', 'xgb'] on 11340 rows (2835 calibration)
+2026-09-04 03:53:29,067 INFO liquidity_forecast.pipeline: CV intraday h=1 fold=1 MAE=2.33e+06 cov90=0.913 dir=0.846 skill=0.075
+2026-09-04 03:53:57,969 INFO liquidity_forecast.models: h=1 fitted ['lgb', 'xgb'] on 23313 rows (5828 calibration)
+2026-09-04 03:54:17,862 INFO liquidity_forecast.models: h=4 fitted ['lgb', 'xgb'] on 6782 rows (1695 calibration)
+2026-09-04 03:54:18,468 INFO liquidity_forecast.pipeline: CV intraday h=4 fold=0 MAE=5e+06 cov90=0.901 dir=0.904 skill=0.201
+2026-09-04 03:54:42,356 INFO liquidity_forecast.models: h=4 fitted ['lgb', 'xgb'] on 11324 rows (2830 calibration)
+2026-09-04 03:54:42,930 INFO liquidity_forecast.pipeline: CV intraday h=4 fold=1 MAE=4.96e+06 cov90=0.923 dir=0.905 skill=0.184
+2026-09-04 03:55:13,865 INFO liquidity_forecast.models: h=4 fitted ['lgb', 'xgb'] on 23313 rows (5828 calibration)
+2026-09-04 03:55:32,536 INFO liquidity_forecast.models: h=24 fitted ['lgb', 'xgb'] on 6670 rows (1667 calibration)
+2026-09-04 03:55:33,050 INFO liquidity_forecast.pipeline: CV intraday h=24 fold=0 MAE=1.41e+07 cov90=0.889 dir=0.779 skill=0.370
+2026-09-04 03:55:55,192 INFO liquidity_forecast.models: h=24 fitted ['lgb', 'xgb'] on 11212 rows (2802 calibration)
+2026-09-04 03:55:55,658 INFO liquidity_forecast.pipeline: CV intraday h=24 fold=1 MAE=1.32e+07 cov90=0.937 dir=0.801 skill=0.348
+2026-09-04 03:56:26,208 INFO liquidity_forecast.models: h=24 fitted ['lgb', 'xgb'] on 23313 rows (5828 calibration)
+2026-09-04 03:56:30,511 INFO liquidity_forecast.models: h=1 fitted ['lgb', 'xgb'] on 555 rows (138 calibration)
+2026-09-04 03:56:30,609 INFO liquidity_forecast.pipeline: CV daily h=1 fold=0 MAE=1.01e+07 cov90=0.870 dir=0.789 skill=0.204
+2026-09-04 03:56:37,022 INFO liquidity_forecast.models: h=1 fitted ['lgb', 'xgb'] on 936 rows (233 calibration)
+2026-09-04 03:56:37,129 INFO liquidity_forecast.pipeline: CV daily h=1 fold=1 MAE=1.03e+07 cov90=0.917 dir=0.765 skill=0.150
+2026-09-04 03:56:47,699 INFO liquidity_forecast.models: h=1 fitted ['lgb', 'xgb'] on 1944 rows (485 calibration)
+2026-09-04 03:56:51,773 INFO liquidity_forecast.models: h=5 fitted ['lgb', 'xgb'] on 532 rows (133 calibration)
+2026-09-04 03:56:51,865 INFO liquidity_forecast.pipeline: CV daily h=5 fold=0 MAE=2.51e+07 cov90=0.782 dir=0.798 skill=0.296
+2026-09-04 03:56:58,127 INFO liquidity_forecast.models: h=5 fitted ['lgb', 'xgb'] on 913 rows (228 calibration)
+2026-09-04 03:56:58,231 INFO liquidity_forecast.pipeline: CV daily h=5 fold=1 MAE=1.86e+07 cov90=0.932 dir=0.798 skill=0.417
+2026-09-04 03:57:08,928 INFO liquidity_forecast.models: h=5 fitted ['lgb', 'xgb'] on 1944 rows (485 calibration)
+
+=== trained in 289s ===
+
+=== Time-series CV (intraday) ===
+         mae_scaled  coverage_90  directional_acc  skill_vs_baseline
+horizon                                                             
+1            0.0043       0.9173           0.8508            0.07667
+4          0.009127        0.912           0.9042             0.1926
+24          0.02571        0.913           0.7901              0.359
+
+=== Time-series CV (daily) ===
+         mae_scaled  coverage_90  directional_acc  skill_vs_baseline
+horizon                                                             
+1           0.01813       0.8934           0.7772             0.1774
+5           0.03909       0.8571           0.7982             0.3566
+
+=== Live forecast, intraday, 80% & 90% intervals ===
+  account_id         target_time  horizon  confidence  current_balance     point     lower     upper  baseline_component  ml_component  confidence_score
+  CB_USD_FED 2026-03-02 07:00:00        1         0.8        2.513e+09 2.512e+09 2.487e+09 2.529e+09           2.281e+06    -3.121e+06            0.8572
+NOS_USD_CITI 2026-03-02 07:00:00        1         0.8        8.952e+07 8.844e+07 8.758e+07 8.918e+07          -9.863e+05    -9.024e+04            0.8469
+  CB_USD_FED 2026-03-02 07:00:00        1         0.9        2.513e+09 2.512e+09 2.485e+09 2.534e+09           2.281e+06    -3.121e+06            0.8367
+NOS_USD_CITI 2026-03-02 07:00:00        1         0.9        8.952e+07 8.844e+07 8.742e+07 8.935e+07          -9.863e+05    -9.024e+04            0.8214
+  CB_USD_FED 2026-03-02 10:00:00        4         0.8        2.513e+09  2.44e+09 2.385e+09 2.501e+09          -3.261e+07     -4.03e+07            0.6847
+NOS_USD_CITI 2026-03-02 10:00:00        4         0.8        8.952e+07 8.413e+07 8.234e+07 8.624e+07          -4.394e+06    -9.959e+05             0.694
+  CB_USD_FED 2026-03-02 10:00:00        4         0.9        2.513e+09  2.44e+09 2.362e+09  2.51e+09          -3.261e+07     -4.03e+07            0.6305
+NOS_USD_CITI 2026-03-02 10:00:00        4         0.9        8.952e+07 8.413e+07 8.217e+07 8.677e+07          -4.394e+06    -9.959e+05             0.658
+  CB_USD_FED 2026-03-03 18:00:00       24         0.8        2.513e+09  2.35e+09 2.151e+09 2.533e+09           9.279e+07    -2.558e+08            0.3978
+NOS_USD_CITI 2026-03-03 18:00:00       24         0.8        8.952e+07 8.545e+07 7.933e+07 9.266e+07           3.186e+06    -7.251e+06             0.399
+  CB_USD_FED 2026-03-03 18:00:00       24         0.9        2.513e+09  2.35e+09 2.149e+09 2.605e+09           9.279e+07    -2.558e+08            0.3555
+NOS_USD_CITI 2026-03-03 18:00:00       24         0.9        8.952e+07 8.545e+07 7.828e+07 9.442e+07           3.186e+06    -7.251e+06            0.3541
+
+=== Live forecast, daily ===
+  account_id target_time  horizon     point     lower     upper  stress_regime
+AGT_GBP_BARC  2026-03-02        1 1.507e+08 1.423e+08 1.584e+08              0
+ AGT_USD_JPM  2026-03-02        1 4.106e+08 3.877e+08 4.275e+08              0
+  CB_EUR_ECB  2026-03-02        1 1.237e+09 1.179e+09 1.305e+09              0
+  CB_USD_FED  2026-03-02        1 2.614e+09 2.487e+09 2.759e+09              0
+  NOS_EUR_DB  2026-03-02        1 6.623e+07 6.249e+07 6.957e+07              0
+NOS_GBP_HSBC  2026-03-02        1 3.319e+07 3.137e+07 3.486e+07              0
+NOS_USD_CITI  2026-03-02        1 9.479e+07 8.894e+07 9.877e+07              0
+AGT_GBP_BARC  2026-03-06        5 1.522e+08 1.322e+08  1.67e+08              0
+ AGT_USD_JPM  2026-03-06        5 4.129e+08 3.611e+08 4.471e+08              0
+  CB_EUR_ECB  2026-03-06        5 1.295e+09 1.142e+09 1.373e+09              0
+  CB_USD_FED  2026-03-06        5  2.71e+09 2.394e+09 2.908e+09              0
+  NOS_EUR_DB  2026-03-06        5 6.705e+07 5.967e+07 7.379e+07              0
+NOS_GBP_HSBC  2026-03-06        5 3.323e+07 2.992e+07 3.552e+07              0
+NOS_USD_CITI  2026-03-06        5 9.889e+07 8.769e+07 1.078e+08              0
+
+=== Backtest (intraday, test period) by horizon ===
+       n  mae_scaled  mape_pct  mape_weighted_pct  directional_acc  coverage_90  interval_width_scaled  skill_vs_baseline
+1  3,605    0.005508     0.946             0.9598           0.8423       0.9015                0.01851             0.1087
+4  3,584      0.0135     2.991              3.109           0.8982       0.8876                0.03863             0.2501
+24 3,444     0.05427     19.64              20.87           0.7622       0.8963                 0.1219             0.2695
+
+=== Backtest (intraday) by account type ===
+                 n  mae_scaled  mape_pct  mape_weighted_pct  directional_acc  coverage_90  interval_width_scaled  skill_vs_baseline
+agent_bank   3,038     0.05059     23.47              23.47           0.8522       0.8239                0.06177             0.2192
+central_bank 3,038     0.01191     1.243              1.243           0.8338       0.9361                0.05315             0.2672
+nostro       4,557     0.01433     1.462              1.462           0.8248       0.9153                0.06054             0.2317
+
+=== Backtest (intraday) by regime (1 = detected stress) ===
+          n  mae_scaled  mape_pct  mape_weighted_pct  directional_acc  coverage_90  interval_width_scaled  skill_vs_baseline
+0 1.028e+04     0.02203     3.179              3.293           0.8351       0.9014                0.05887              0.258
+1       348     0.08197       141              125.4           0.8386       0.7098                0.05604             0.1736
+
+intraday: 278 anomalies flagged of 10633 forecasts
+
+=== Backtest (daily, test period) by horizon ===
+    n  mae_scaled  mape_pct  mape_weighted_pct  directional_acc  coverage_90  interval_width_scaled  skill_vs_baseline
+1 287     0.03202     6.271              6.534           0.7979       0.8885                0.08655             0.2107
+5 259     0.07884     22.94              24.56           0.8031       0.8649                  0.186             0.3711
+
+=== Backtest (daily) by account type ===
+               n  mae_scaled  mape_pct  mape_weighted_pct  directional_acc  coverage_90  interval_width_scaled  skill_vs_baseline
+agent_bank   156      0.1295     43.68              43.68           0.7756       0.7436                 0.1439             0.2892
+central_bank 156     0.02331     2.373              2.373           0.8141       0.9038                 0.1243             0.3426
+nostro       234     0.02468     2.376              2.376           0.8077       0.9487                 0.1332             0.3125
+
+=== Backtest (daily) by regime (1 = detected stress) ===
+    n  mae_scaled  mape_pct  mape_weighted_pct  directional_acc  coverage_90  interval_width_scaled  skill_vs_baseline
+0 457     0.03957     11.74              12.92           0.8031       0.9081                 0.1315             0.3441
+1  89      0.1295     26.68              23.92           0.7865       0.7191                 0.1449             0.2329
+
+daily: 23 anomalies flagged of 546 forecasts
+
+=== Stress-window backtest (valid split contains the synthetic crisis) ===
+          n  mae_scaled  coverage_90  interval_width_scaled
+0 1.059e+04     0.01665       0.9337                0.07606
+1       243     0.01717       0.9218                0.07728
+
+=== Top features, intraday h=1 (global model) ===
+ccy_other_flow_lag1   0.02433
+max_abs_tx_scaled     0.02316
+fx_EURUSD               0.023
+estr_chg_4             0.0225
+ccy_other_flow        0.02216
+regime_vol_z           0.0215
+tx_count_rel          0.02133
+corr_nostro           0.02133
+fx_GBPUSD_chg_4       0.02133
+flow_std_4             0.0195
+bal_std_24            0.01933
+flow_lag_8            0.01916
+dtype: float64
+
+=== Top features by account type, intraday h=4 ===
+2026-09-04 03:57:15,159 INFO liquidity_forecast.models: h=4 fitted ['lgb', 'xgb'] on 7294 rows (0 calibration)
+2026-09-04 03:57:18,875 INFO liquidity_forecast.models: h=4 fitted ['lgb', 'xgb'] on 7294 rows (0 calibration)
+2026-09-04 03:57:23,148 INFO liquidity_forecast.models: h=4 fitted ['lgb', 'xgb'] on 10941 rows (0 calibration)
+
+-- agent_bank
+regime_vol_z         0.0315
+flow_std_120        0.02916
+fx_GBPUSD           0.02866
+bal_std_120         0.02833
+corr_nostro           0.028
+fx_EURUSD             0.024
+flow_std_12           0.024
+corr_central_bank    0.0235
+dtype: float64
+
+-- central_bank
+regime_vol_z        0.032
+fx_EURUSD         0.02733
+corr_nostro       0.02683
+corr_agent_bank   0.02616
+flow_std_120      0.02583
+estr                0.025
+bal_std_120       0.02333
+bal_std_24        0.02283
+dtype: float64
+
+-- nostro
+corr_central_bank   0.03583
+flow_std_120        0.03166
+bal_mean_120        0.03133
+corr_agent_bank     0.03066
+flow_std_12          0.0275
+flow_std_24           0.027
+regime_vol_z        0.02483
+flow_mean_12        0.02433
+dtype: float64
+
+=== Top features by account type, daily h=1 ===
+2026-09-04 03:57:24,153 INFO liquidity_forecast.models: h=1 fitted ['lgb', 'xgb'] on 608 rows (0 calibration)
+2026-09-04 03:57:25,168 INFO liquidity_forecast.models: h=1 fitted ['lgb', 'xgb'] on 608 rows (0 calibration)
+2026-09-04 03:57:26,411 INFO liquidity_forecast.models: h=1 fitted ['lgb', 'xgb'] on 912 rows (0 calibration)
+
+-- agent_bank
+max_abs_tx_scaled   0.04137
+flow_mean_5         0.03226
+estr_chg_5          0.03225
+flow_lag_30          0.0292
+bal_lag_30           0.0292
+corr_nostro         0.02859
+ccy_other_flow      0.02738
+fx_GBPUSD_chg_5     0.02738
+dtype: float64
+
+-- central_bank
+flow_lag_30         0.04338
+bal_scaled          0.02898
+inflow_scaled       0.02711
+max_abs_tx_scaled   0.02711
+flow_lag_1          0.02591
+flow_mean_30        0.02531
+fx_EURUSD_chg_5     0.02531
+bal_chg_5           0.02471
+dtype: float64
+
+-- nostro
+max_abs_tx_scaled   0.03203
+bal_chg_5           0.02817
+bal_chg_30          0.02663
+fx_GBPUSD_chg_5     0.02585
+ccy_other_flow      0.02585
+flow_lag_5           0.0247
+flow_std_5          0.02392
+bal_lag_10          0.02354
+dtype: float64
+
+total 306s

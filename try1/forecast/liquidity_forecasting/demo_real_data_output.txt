@@ -1,0 +1,80 @@
+INFO liquidity_forecast.synthetic: synthetic: 10836 balance rows, 1013101 transactions, 7 accounts
+{'mt940': '2.2 MB', 'mt942': '4.5 MB', 'camt053': '1.9 MB', 'hub': '98.6 MB', 'fx': '0.4 MB', 'queue': '1.0 MB', 'desk': '0.8 MB'}
+INFO liquidity_forecast.loaders: MT940: 2298 balance rows, 30640 statement lines
+INFO liquidity_forecast.loaders: MT942: 4616 balance rows, 92880 movements
+INFO liquidity_forecast.loaders: camt: 258 balance rows, 5160 entries
+INFO liquidity_forecast.loaders: payment hub: 1013101 rows, flow_class mix {'client': 709172, 'known': 202834, 'treasury': 101095}
+INFO liquidity_forecast.loaders: fx blotter: 8114 legs from 4057 trades
+INFO liquidity_forecast.loaders: combine_transactions: 1105981 -> 1105981 rows after de-duplication on ['account_id', 'amount', 'value_date', 'reference']
+
+=== coverage ===
+                     rows  accounts               start                 end
+table                                                                     
+accounts               7         7                 NaT                 NaT
+balances            5128         7 2025-02-03 07:00:00 2025-07-31 18:00:00
+transactions     1105981         7 2025-02-03 07:00:00 2025-07-31 18:59:50
+scheduled_flows     8114         7 2025-02-02 07:47:23 2025-07-30 18:56:23
+queue_snapshots    10782         7 2025-02-03 07:00:00 2025-07-31 18:00:00
+benchmark          10698         7 2025-02-03 15:00:00 2025-07-31 14:00:00
+
+flow_class mix: {'client': 773991, 'known': 221574, 'treasury': 110416}
+balance kinds: {'available': 5128}
+INFO liquidity_forecast.data: calendar: 1548 open periods from 2025-02-03 07:00:00 to 2025-07-31 18:00:00
+INFO liquidity_forecast.data: filled 5708 missing balance observations (52.68%)
+INFO liquidity_forecast.data: excluded 110416 ['treasury'] transactions from the modelling target
+INFO liquidity_forecast.data: flagged 10 outlier flow buckets
+INFO liquidity_forecast.features: features[intraday]: 10836 rows x 97 cols
+INFO liquidity_forecast.known_flows: known flows: 8114 scheduled rows mapped onto 10836 origins
+INFO liquidity_forecast.pipeline: intraday: residual target = raw change - known flows - excluded flows
+INFO liquidity_forecast.pipeline: intraday split sizes train/valid/test = 7140/1680/2016
+INFO liquidity_forecast.features: features[daily]: 903 rows x 81 cols
+INFO liquidity_forecast.known_flows: known flows: 8114 scheduled rows mapped onto 903 origins
+INFO liquidity_forecast.pipeline: daily: residual target = raw change - known flows - excluded flows
+INFO liquidity_forecast.pipeline: daily split sizes train/valid/test = 595/147/161
+INFO liquidity_forecast.models: h=1 fitted ['lgb'] on 7051 rows (1762 calibration)
+INFO liquidity_forecast.models: h=4 fitted ['lgb'] on 7051 rows (1762 calibration)
+INFO liquidity_forecast.models: h=1 fitted ['lgb'] on 588 rows (147 calibration)
+
+known-flow / queue features (NOS_USD_CITI, sample):
+                     known_h1  known_h4  known_count_h1  queued_amount_scaled  held_amount_scaled  excluded_h4  y_h4_raw      y_h4
+timestamp                                                                                                                         
+2025-02-03 07:00:00  0.000000 -0.046907             0.0              0.010187            0.002144    -0.014650 -0.008139  0.053417
+2025-02-03 08:00:00  0.000000 -0.046907             0.0              0.005197            0.001379    -0.009825  0.028744  0.085476
+2025-02-03 09:00:00 -0.046907 -0.046907             9.0              0.012828            0.000955     0.010063  0.046319  0.083163
+2025-02-03 18:00:00  0.000000 -0.001272             0.0              0.010309            0.001787    -0.012925 -0.072242 -0.058044
+2025-02-04 07:00:00  0.000000 -0.004815             0.0              0.007121            0.000339    -0.009601 -0.047505 -0.033089
+
+share of origins with a known flow in next 4h: 0.869 | share with treasury flow excluded: 0.999
+
+=== forecast with component breakdown ===
+  account_id         target_time  horizon  current_balance        point        lower        upper  baseline_component  ml_component  known_component
+  CB_USD_FED 2025-08-01 07:00:00        1     2.242358e+09 2.225662e+09 2.181879e+09 2.271868e+09       -1.881784e+07  2.121944e+06     0.000000e+00
+NOS_USD_CITI 2025-08-01 07:00:00        1     7.895926e+07 7.730285e+07 7.442878e+07 7.911186e+07       -2.199843e+06  5.434328e+05     0.000000e+00
+  CB_USD_FED 2025-08-01 10:00:00        4     2.242358e+09 2.121037e+09 1.998010e+09 2.203473e+09       -1.414210e+08  2.009959e+07    -7.450581e-09
+NOS_USD_CITI 2025-08-01 10:00:00        4     7.895926e+07 7.120806e+07 6.555866e+07 7.379539e+07       -9.781105e+06  2.029909e+06     9.662472e-09
+INFO liquidity_forecast.known_flows: benchmark: 1935 of 3997 prediction rows have a desk forecast
+
+=== backtest by horizon (unmanaged position) ===
+        n  mae_scaled  mape_weighted_pct  coverage_90  directional_acc  skill_vs_baseline
+1  2009.0    0.007478           0.758957     0.903932         0.593000           0.193688
+4  1988.0    0.015590           1.583302     0.869718         0.683099           0.339584
+
+=== model vs desk forecast on identical rows (h=4) ===
+            n           mae          rmse  mape_pct  directional_acc
+model  1935.0  1.006194e+07  2.273241e+07  1.572601         0.684755
+desk   1935.0  1.763375e+07  3.695750e+07  3.512376         0.606718
+
+top features h=4:
+known_h4         0.090476
+hour             0.056667
+dow              0.050952
+seasonal_flow    0.046190
+account_id       0.039524
+hour_cos         0.037143
+bal_chg_8        0.029524
+flow_mean_4      0.027619
+flow_mean_12     0.026190
+flow_lag_4       0.023810
+dtype: float64
+
+total 32s
